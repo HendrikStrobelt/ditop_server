@@ -1,6 +1,6 @@
 package de.hs8.ditop.services;
 
-import de.hs8.ditop.datastructures.DiTopDataSets;
+import de.hs8.ditop.datastructures.DiTopDatasets;
 import de.hs8.ditop.datastructures.QueryResponse;
 import de.hs8.ditop.helper.TopicCoinGenerator;
 import de.oelke.TopicDatabase;
@@ -25,10 +25,10 @@ import java.util.Set;
 public class DiTopServlet {
 
 
-    private final DiTopDataSets dataSets;
+    private final DiTopDatasets dataSets;
 
     @Autowired
-    public DiTopServlet(DiTopDataSets dataSets) {
+    public DiTopServlet(DiTopDatasets dataSets) {
         this.dataSets = dataSets;
     }
 

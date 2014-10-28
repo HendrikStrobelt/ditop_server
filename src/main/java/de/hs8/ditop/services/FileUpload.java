@@ -1,6 +1,6 @@
 package de.hs8.ditop.services;
 
-import de.hs8.ditop.datastructures.DiTopDataSets;
+import de.hs8.ditop.datastructures.DiTopDatasets;
 import de.hs8.ditop.helper.Unzip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,10 +22,10 @@ import java.io.FileOutputStream;
 @RequestMapping("/ditop")
 public class FileUpload {
 
-    private final DiTopDataSets dataSets;
+    private final DiTopDatasets dataSets;
 
     @Autowired
-    public FileUpload(DiTopDataSets dataSets) {
+    public FileUpload(DiTopDatasets dataSets) {
         this.dataSets = dataSets;
     }
 

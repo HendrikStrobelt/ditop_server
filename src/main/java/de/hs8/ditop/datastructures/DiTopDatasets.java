@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 
 @Component
-public class DiTopDataSets {
+public class DiTopDatasets {
 
     @Value("${localStorage.dir}") String dataDir;
     final String configFile="config.all";
