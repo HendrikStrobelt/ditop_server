@@ -64,19 +64,21 @@ public class DiTopServlet {
             topicDataBase.loadData(topicDocPath, topicTermPath);
             topicDataBase.determineDiscriminativeTopics(discValue, .9);
 
-            final TopicCoinGenerator worldeGenerator = new TopicCoinGenerator(""
+            final TopicCoinGenerator topicCoinGenerator = new TopicCoinGenerator(""
                     + topicDocPath.hashCode(), topicDataBase.getTopicTerms());
-            worldeGenerator.createTopicCoins();
-            worldeGenerator.createDiTopPositions();
+            topicCoinGenerator.createTopicCoins();
+            topicCoinGenerator.createDiTopPositions();
 
             final QueryResponse resp = new QueryResponse();
-            resp.termGroups = worldeGenerator.getTopicMap();
-            final Set<Map.Entry<String, TopicCoinGenerator.SetVisGroup>> allSetNamesAndID = worldeGenerator
+            resp.termGroups = topicCoinGenerator.getTopicMap();
+            final Set<Map.Entry<String, TopicCoinGenerator.SetVisGroup>> allSetNamesAndID = topicCoinGenerator
                     .getAllSetNamesAndID().entrySet();
             for (final Map.Entry<String, TopicCoinGenerator.SetVisGroup> entry : allSetNamesAndID) {
                 resp.setNamesSorted.put(entry.getValue().countID,
                         entry.getKey());
             }
+
+            resp.maxValueMap = topicCoinGenerator.maxValueMap;
 
 
             return resp;

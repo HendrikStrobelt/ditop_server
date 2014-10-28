@@ -12,5 +12,7 @@ public class QueryResponse {
     public TreeMap<Integer, String> setNamesSorted = new TreeMap<Integer, String>();
     public Map<String, Topic> termGroups;
 //    public String requestDB;
+    public Map<String, Double> maxValueMap;
+
 
 }

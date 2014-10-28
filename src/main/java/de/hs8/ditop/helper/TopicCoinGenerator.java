@@ -42,6 +42,8 @@ public class TopicCoinGenerator {
     private FPoint[] templatePositions;
     private final HashMap<Integer, Topic> topicTerms;
     private final String dataSetPrefix;
+    public Map<String, Double> maxValueMap = new HashMap<String, Double>();
+
 
     public TopicCoinGenerator(final String dataSetPrefix,
                             final HashMap<Integer, Topic> topicTerms) {
@@ -87,17 +89,18 @@ public class TopicCoinGenerator {
         }
         //		System.out.println(sharedTopics);
 
-        // normalize over all items
-        TermSizeAssigner.assignAll(discriminiativeTopics,
-                TermSizeAssigner.TSAMethod.NORMALIZEALL);
 
-        TermSizeAssigner.assignAll(sharedTopics, TermSizeAssigner.TSAMethod.NORMALIZEALL);
 
 		/* get all containers .... */
         final TreeSet<String> allSetNames = new TreeSet<String>();
         for (final Topic termGroup : discriminiativeTopics) {
             allSetNames.addAll(termGroup.characteristicness.keySet());
         }
+        for (final Topic termGroup : sharedTopics) {
+            allSetNames.addAll(termGroup.characteristicness.keySet());
+        }
+
+
         if (allSetNames.size() < 1)
             allSetNames.add("All");
 
@@ -117,12 +120,18 @@ public class TopicCoinGenerator {
 
 		/* assign all containers to shared groups and add to topicList */
         for (final Topic shGroup : sharedTopics) {
-            for (final String setName : allSetNames) {
-                shGroup.characteristicness.put(setName, 0.5d);
-            }
-            shGroup.characteristicValue = 0.5f;
+//            for (final String setName : allSetNames) {
+//                shGroup.characteristicness.put(setName, 0.5d);
+//            }
+//            shGroup.characteristicValue = 0.5f;
             discriminiativeTopics.add(shGroup);
         }
+
+        // normalize over all items
+        TermSizeAssigner.assignAll(discriminiativeTopics,
+                TermSizeAssigner.TSAMethod.NORMALIZEALL, maxValueMap);
+
+
 
 		/* finally add all TG to the tgMap */
         int id = 1;

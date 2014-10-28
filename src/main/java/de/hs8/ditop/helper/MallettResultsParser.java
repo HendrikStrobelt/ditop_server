@@ -115,7 +115,7 @@ public class MallettResultsParser {
             final String topicSummaryPath,
             final HashMap<Integer, Topic> map) throws IOException {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(
-                new FileInputStream(topicSummaryPath)));
+                new FileInputStream(topicSummaryPath),"UTF-8"));
         String line;
         while ((line = reader.readLine()) != null) {
             final String[] parts = line.split(":");

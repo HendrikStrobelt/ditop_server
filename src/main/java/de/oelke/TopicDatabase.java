@@ -216,8 +216,26 @@ public class TopicDatabase {
                 .entrySet();
         for (final Entry<Integer, ArrayList<Double>> entry : entrySet) {
             final double d = calcTopicEntropy(entry.getValue());
-            if (d > entropyThreshold)
+            if (d > entropyThreshold) {
+
                 topicTerms.get(entry.getKey()).isShared = true;
+                final Topic hs8topic = topicTerms.get(entry.getKey());
+                for (final Entry<String, SubCollection> subcoll : collection
+                        .entrySet()) {
+                    final String collName = subcoll.getKey();
+                    if (!collName.equals("All")) {
+                        System.out.println(collName);
+                        hs8topic.characteristicness.put(
+                                subcoll.getKey(),
+                                calcCharacteristicness(entry.getKey(),
+                                        subcoll.getValue()));
+                    }
+
+                }
+
+            }
+
+
         }
 
     }

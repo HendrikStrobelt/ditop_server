@@ -23,7 +23,9 @@ public class Unzip {
             ZipEntry entry;
 
             while ((entry = zis.getNextEntry()) != null) {
-                System.out.println("Extracting: " + entry);
+//                System.out.println("Extracting: " + entry);
+                if (entry.getName().contains("__MACOSX"))
+                    continue;
                 if (entry.isDirectory()) {
                     System.out.println("is dir");
                     final File dir = new File(path + entry.getName());

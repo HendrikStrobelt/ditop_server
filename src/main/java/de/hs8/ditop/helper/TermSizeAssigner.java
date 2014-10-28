@@ -28,18 +28,29 @@ public class TermSizeAssigner {
             return max - min;
         }
 
+        @Override
+        public String toString() {
+            return "MinMaxer [min=" + min + ", max=" + max + "]";
+        }
+
+
     }
+
+
 
     public static boolean assignAll(
             final List<Topic> groups,
             final TSAMethod method) {
+        return assignAll(groups, method, null);
+    }
+
+    public static boolean assignAll(final List<Topic> groups,
+                                    final TSAMethod method, final Map<String, Double> maxValueMap) {
         if (method == TSAMethod.NORMALIZEALL) {
 
             final MinMaxer weightMinMax = new MinMaxer();
             final MinMaxer discMinMax = new MinMaxer();
             final MinMaxer charMinMax = new MinMaxer();
-
-            final HashMap<String, MinMaxer> charmapMinMax = new HashMap<String, TermSizeAssigner.MinMaxer>();
 
             for (final Topic termGroup : groups) {
                 final List<Term> terms = termGroup.terms;
@@ -63,20 +74,13 @@ public class TermSizeAssigner {
                     val = entry.getValue();
                     sum += val;
 
-                    minMaxer = charmapMinMax.get(entry.getKey());
-                    if (minMaxer == null) {
-                        minMaxer = new MinMaxer();
-                        charmapMinMax.put(entry.getKey(), minMaxer);
-                    }
-                    minMaxer.update((float) val);
+                    charMinMax.update((float) val);
 
                     count++;
                 }
                 if (count > 1) { // averaging charactersitcis
                     sum = sum / count;
                 }
-
-                charMinMax.update(sum);
 
                 if (sum > 0) {
                     termGroup.characteristicValue = sum;
@@ -92,7 +96,7 @@ public class TermSizeAssigner {
             if (scaleCharacteristicValue == 0)
                 scaleCharacteristicValue = 1; // to avoid div-by-zero
 
-            MinMaxer actualCharMinMaxer;
+
             for (final Topic termGroup : groups) {
                 final List<Term> terms = termGroup.terms;
                 for (final Term term : terms) {
@@ -100,15 +104,19 @@ public class TermSizeAssigner {
                 }
 
 				/* normalize DiscValue */
-                termGroup.disValue = (termGroup.disValue - discMinMax.min)
-                        / (discMinMax.scale());
+                // termGroup.disValue = (termGroup.disValue - discMinMax.min)
+                // / (discMinMax.scale());
+                if (discMinMax.max > 0)
+                    termGroup.disValue = (termGroup.disValue / discMinMax.max);
+                // else
+                // termGroup.disValue = termGroup.disValue;
 
-				/* normalize all DiscValues 0-max */
+
+				/* normalize all DiscValues 0-max.dv */
                 for (final Map.Entry<String, Double> entry : termGroup.characteristicness
                         .entrySet()) {
-                    actualCharMinMaxer = charmapMinMax.get(entry.getKey());
-                    entry.setValue((entry.getValue() - actualCharMinMaxer.min)
-                            / actualCharMinMaxer.scale());
+                    entry.setValue((entry.getValue() / scaleCharacteristicValue));
+
                 }
 
 				/* normalize Char value -- negative Values remain neg. !! */
@@ -118,6 +126,9 @@ public class TermSizeAssigner {
                         / scaleCharacteristicValue;
 
             }
+
+            maxValueMap.put("char", (double) charMinMax.max);
+            maxValueMap.put("disc", (double) discMinMax.max);
 
         }
         return true;

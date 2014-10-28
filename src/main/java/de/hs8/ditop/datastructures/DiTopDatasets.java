@@ -85,7 +85,7 @@ public class DiTopDataSets {
     public void recreateConfigFile() {
         final File dataDirs = new File(dataDir);
         final Pattern compile = Pattern
-                .compile("([a-zA-Z0-9-]+)_([1-9][0-9]*)");
+                .compile("([a-zA-Z0-9-_]+)_([1-9][0-9]*)");
 
         if (dataDirs.exists() && dataDirs.isDirectory()) {
 
