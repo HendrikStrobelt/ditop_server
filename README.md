@@ -1,5 +1,6 @@
 DiTop Server Component
 ============
+##### for more information on the DiTop project visit: [ditop.hs8.de](http://ditop.hs8.de)
 
 clone repository:
 
@@ -23,5 +24,5 @@ java -jar target/ditop_server-1.0.jar
 !!! Before starting you should change the data directory in [src/main/resources/application.yaml](src/main/resources/application.yaml)
 
 
-
+The software is licensed under the new BSD.
 
