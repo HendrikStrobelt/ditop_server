@@ -60,7 +60,13 @@ public class FileUpload {
                 }
 
 
-                return "You successfully uploaded " + filename ;
+                return "You successfully uploaded " + filename +". Please go back and hit reload !"
+                        +"<script>\n" + "function goBack()\n" + "  {\n"
+                        + "  window.history.back()\n" + "  }\n"
+                        + "</script>\n" + "\n"
+                        + "<body> "
+                        + "<button onclick=\"goBack()\">Go Back</button>\n"
+                        + "</body>";
             } catch (Exception e) {
                 return "You failed to upload " + filename + " => " + e.getMessage();
             }

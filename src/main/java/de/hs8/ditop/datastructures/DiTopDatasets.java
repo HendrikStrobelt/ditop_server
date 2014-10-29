@@ -24,8 +24,14 @@ public class DiTopDatasets {
 
 
     private void  init(){
+
+        File dd = new File(this.dataDir);
+        if (!dd.exists()){
+            dd.mkdirs();
+        }
+        if (!dataDir.endsWith("/")) this.dataDir= dataDir+"/";
+
         final File file = new File(this.dataDir + this.configFile);
-        System.out.println(file.getAbsolutePath());
         if (file.exists()) {
             try {
                 final Scanner scanner = new Scanner(file, "UTF-8");
@@ -83,6 +89,7 @@ public class DiTopDatasets {
     }
 
     public void recreateConfigFile() {
+
         final File dataDirs = new File(dataDir);
         final Pattern compile = Pattern
                 .compile("([a-zA-Z0-9-_]+)_([1-9][0-9]*)");
@@ -108,7 +115,7 @@ public class DiTopDatasets {
             }
 
             try {
-                final PrintWriter writer = new PrintWriter(configFile, "UTF-8");
+                final PrintWriter writer = new PrintWriter(dataDir+configFile, "UTF-8");
 
                 for (final Map.Entry<String, List<String>> entry : datasets
                         .entrySet()) {
